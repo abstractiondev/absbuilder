@@ -70,8 +70,23 @@
       <Name>OperationToDocumentationTRANS</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="absbuilder\Content_v1_0\" />
+    <None Include="absbuilder\absbuilder_v1_0.ttinclude" />
+    <None Include="absbuilder\Content_v1_0\absbuilder_v1_0.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>absbuilder_v1_0.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+    <None Include="absbuilder\Content_v1_0\absbuilder_v1_0.xsd">
+      <Generator>T4ScriptFileGenerator</Generator>
+      <LastGenOutput>absbuilder_v1_0.tt</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
