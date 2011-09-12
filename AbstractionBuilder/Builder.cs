@@ -4,11 +4,11 @@ using AbstractionConfig;
 
 namespace AbstractionBuilder
 {
-    public class AbstractionBuilder
+    public partial class Builder
     {
         private readonly string LocationFormat;
 
-        public AbstractionBuilder()
+        public Builder()
         {
             ContentSupport.ContentRootPath =
                 @"C:\GitHub\kallex\private\Demos\CQRS_CustomerBankAccountDemo\Abstractions\AbstractionContent\";
@@ -19,9 +19,15 @@ namespace AbstractionBuilder
                                                                                "{0}{1}.dll");
         }
 
-        public void Build()
+        //public void Build()
+        //{
+        //    Tuple<string, string>[] generatorFiles;
+        //    generatorFiles = ExecuteAssemblyGenerator("Documentation", "ABS", "DesignDocumentation_v1_0");
+        //    WriteGeneratorFiles(generatorFiles);
+        //}
+
+        private void WriteGeneratorFiles(Tuple<string, string>[] generatorFiles, string abstractionName, string abstractionTypeString)
         {
-            Tuple<string, string>[] generatorFiles = ExecuteAssemblyGenerator("Documentation", "ABS", "DesignDocumentation_v1_0");
         }
 
         private Tuple<string, string>[] ExecuteAssemblyGenerator(string abstractionName, string abstractionTypeString, string generatorClassName)

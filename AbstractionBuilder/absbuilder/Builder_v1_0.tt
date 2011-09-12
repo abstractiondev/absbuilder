@@ -1,0 +1,117 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".designer.cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="System.Xml.dll" #>
+<#@ Assembly Name="System.Xml.Linq.dll" #>
+<#@ Assembly Name="System.Windows.Forms.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Xml.Serialization" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ include file="..\..\..\abscommon\CommonInclude\Common\CommonCodeblocks.ttinclude" #>
+<#@ include file="absbuilder_v1_0.ttinclude" #>
+<#   
+	string templateDirectoryName = Path.GetDirectoryName(Host.TemplateFile);
+	string directoryName = templateDirectoryName + @"\Content_v1_0";
+	directoryName = directoryName.Replace(@"absbuilder\AbstractionBuilder", "AbstractionContent");
+	string[] xmlFileNames = Directory.GetFiles(directoryName, "*.xml");
+
+	#>
+using System;
+
+	<#
+	
+	foreach(string xmlFileName in xmlFileNames)
+	{
+		AbstractionBuilderType absbuilder = LoadXml<AbstractionBuilderType>(xmlFileName);
+		GenerateBuilder(absbuilder.Builder);
+		/*
+		Operation_v1_0.OperationAbstractionType abstraction = LoadXml<Operation_v1_0.OperationAbstractionType>(xmlFileName);
+		Operation_v1_0.OperationsType operations = abstraction.Operations;
+		BeginNamespace(operations.codeNamespace);
+		foreach(var operation in operations.Operation)
+			GenerateOperation(operation);
+		EndBlock();
+		*/
+		//PowerPointAddIn_v1_0.PowerPointAddInAbstraction abstraction = LoadXml<PowerPointAddIn_v1_0.PowerPointAddInAbstraction>(xmlFileName);
+		//GenerateAddInBase(abstraction);
+	}
+#>
+<#+ 
+	#region Class Level Variable Block
+	
+	private BuilderType CurrBuilder;
+	
+	//CQRS_v1_0.DomainType CurrentDomain;
+	void GenerateBuilder(BuilderType builder)
+	{
+		CurrBuilder = builder;
+		#>
+namespace AbstractionBuilder {
+	partial class Builder {
+        public void Build()
+        {
+            Tuple<string, string>[] generatorFiles = null;
+		<#+
+			foreach(object buildExecuteItem in builder.BuildExecution)
+			{
+				GenerateExecuteItem(buildExecuteItem);
+			}
+		#>
+            //generatorFiles = ExecuteAssemblyGenerator("Documentation", "ABS", "DesignDocumentation_v1_0");
+        }
+	}
+}
+		<#+
+	}
+
+	void GenerateExecuteItem(object executeItem)
+	{
+		if(executeItem == null)
+			throw new ArgumentNullException("executeItem");
+		AbstractionItemType absItem = executeItem as AbstractionItemType;
+		TransformationItemType transItem = executeItem as TransformationItemType;
+		if(absItem != null)
+			GenerateAbstractionExecuteItem(absItem);
+		else if(transItem != null)
+			GenerateTransformationExecuteItem(transItem);
+		else
+			throw new NotSupportedException("Execute item type: " + executeItem.GetType().Name);
+	}
+	
+	void GenerateAbstractionExecuteItem(AbstractionItemType absItem)
+	{
+		AbstractionType abs = CurrBuilder.Abstractions.SingleOrDefault(item => item.name == absItem.nameRef);
+		if(abs == null)
+		{
+			throw new ArgumentException("AbstractionBuildItem referring to undefined abstraction: " + absItem.nameRef);
+		}
+		foreach(GeneratorType generator in abs.Generator) {
+		#>
+	        generatorFiles = ExecuteAssemblyGenerator("<#= abs.name #>", "ABS", "<#= generator.name #>");
+	        WriteGeneratorFiles(generatorFiles, "<#= abs.name #>", "ABS");
+		<#+
+		}
+	}
+	
+	void GenerateTransformationExecuteItem(TransformationItemType transItem)
+	{
+		TransformationType trans = CurrBuilder.Transformations.SingleOrDefault(item => item.name == transItem.nameRef);
+		if(trans == null)
+		{
+			throw new ArgumentException("TransformationBuildItem referring to undefined transformation: " + transItem.nameRef);
+		}
+		#>
+        generatorFiles = ExecuteAssemblyGenerator("<#= trans.name #>", "TRANS", "Transformer");
+        WriteGeneratorFiles(generatorFiles, "<#= trans.name #>", "TRANS");
+		<#+
+	}
+	
+	
+	#endregion
+#>

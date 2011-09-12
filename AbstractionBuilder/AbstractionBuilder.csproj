@@ -47,7 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractionBuilder.cs" />
+    <Compile Include="absbuilder\Builder_v1_0.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Builder_v1_0.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Builder.cs" />
     <Compile Include="CustomCmdLineHost.cs" />
     <Compile Include="DynaInvoke.cs" />
     <Compile Include="Program.cs" />
@@ -71,7 +76,6 @@
       <Name>OperationToDocumentationTRANS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="absbuilder\absbuilder_v1_0.ttinclude" />
     <None Include="absbuilder\Content_v1_0\absbuilder_v1_0.tt">
@@ -84,6 +88,11 @@
       <Generator>T4ScriptFileGenerator</Generator>
       <LastGenOutput>absbuilder_v1_0.tt</LastGenOutput>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="absbuilder\Builder_v1_0.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Builder_v1_0.designer.cs</LastGenOutput>
+      <TransformOnBuild>True</TransformOnBuild>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -21,7 +21,7 @@ namespace AbstractionBuilder
             //string result = generator.TransformText();
             //TransformDocumentation();
             //GenerateDocumentation();
-            AbstractionBuilder builder = new AbstractionBuilder();
+            Builder builder = new Builder();
             builder.Build();
             Console.WriteLine("Generations Done!");
             return 0;
