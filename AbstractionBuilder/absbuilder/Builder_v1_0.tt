@@ -56,6 +56,7 @@ namespace AbstractionBuilder {
 	partial class Builder {
         public void Build()
         {
+			CleanUp();
             Tuple<string, string>[] generatorFiles = null;
 		<#+
 			foreach(object buildExecuteItem in builder.BuildExecution)
@@ -65,8 +66,46 @@ namespace AbstractionBuilder {
 		#>
             //generatorFiles = ExecuteAssemblyGenerator("Documentation", "ABS", "DesignDocumentation_v1_0");
         }
+		
+		private void CleanUp()
+		{
+		<#+
+			foreach(object buildExecuteItem in builder.BuildExecution)
+			{
+				GenerateCleanupItem(buildExecuteItem);
+			}
+		#>
+		}
 	}
 }
+		<#+
+	}
+	
+	void GenerateCleanupItem(object executeItem)
+	{
+		if(executeItem == null)
+			throw new ArgumentNullException("executeItem");
+		AbstractionItemType absItem = executeItem as AbstractionItemType;
+		TransformationItemType transItem = executeItem as TransformationItemType;
+		if(absItem != null)
+		{
+		#>
+            CleanUpAbstractionOutput("<#= absItem.nameRef #>");
+		<#+
+		}
+		else if(transItem != null)
+		{
+			TransformationType targetTrans = CurrBuilder.Transformations.SingleOrDefault(item => item.name == transItem.nameRef);
+			if(targetTrans == null)
+				throw new ArgumentException("Target transformation for exec item not found: " + transItem.nameRef);
+		#>
+            CleanUpTransformationInputAndOutput("<#= targetTrans.name #>", "<#= targetTrans.targetAbstraction #>");
+		<#+
+		}
+		else
+			throw new NotSupportedException("Execute item type: " + executeItem.GetType().Name);
+		
+		#>
 		<#+
 	}
 

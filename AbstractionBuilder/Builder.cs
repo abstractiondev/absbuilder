@@ -58,5 +58,16 @@ namespace AbstractionBuilder
         {
             ContentSupport.CopyFromTransToTarget(transformationName, targetAbstractionName);
         }
+
+        private void CleanUpAbstractionOutput(string abstractionName)
+        {
+            ContentSupport.CleanupAbstractionOutputDirectory(abstractionName);
+        }
+
+        private void CleanUpTransformationInputAndOutput(string transformationName, string targetAbstractionName)
+        {
+            ContentSupport.CleanupTransformationDirectories(transformationName);
+            ContentSupport.RemoveAllInputDirectoriesMatchingTransformationName(targetAbstractionName, transformationName);
+        }
     }
 }

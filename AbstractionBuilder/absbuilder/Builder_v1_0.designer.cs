@@ -5,6 +5,7 @@ using System;
 	partial class Builder {
         public void Build()
         {
+			CleanUp();
             Tuple<string, string>[] generatorFiles = null;
 				FetchTransformationSources("OperationToDocumentation", "Operation");
         generatorFiles = ExecuteAssemblyGenerator("OperationToDocumentation", "TRANS", "Transformer");
@@ -14,6 +15,12 @@ using System;
 	        WriteGeneratorFiles(generatorFiles, "Documentation", "ABS");
 		            //generatorFiles = ExecuteAssemblyGenerator("Documentation", "ABS", "DesignDocumentation_v1_0");
         }
+		
+		private void CleanUp()
+		{
+		            CleanUpTransformationInputAndOutput("OperationToDocumentation", "Documentation");
+				            CleanUpAbstractionOutput("Documentation");
+						}
 	}
 }
 		
