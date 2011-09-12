@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AbstractionBuilder.cs" />
     <Compile Include="CustomCmdLineHost.cs" />
+    <Compile Include="DynaInvoke.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
