@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 //using DocumentationABS.Documentation;
 using Microsoft.VisualStudio.TextTemplating;
-using OperationABS.Operation;
+//using OperationABS.Operation;
 
 namespace AbstractionBuilder
 {

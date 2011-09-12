@@ -47,10 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="absbuilder\Builder_v1_0.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Builder_v1_0.tt</DependentUpon>
+    <Compile Include="..\..\AbstractionContent\absbuilder\Out\Builder.designer.cs">
+      <Link>Builder.designer.cs</Link>
+      <DependentUpon>Builder.cs</DependentUpon>
     </Compile>
     <Compile Include="Builder.cs" />
     <Compile Include="CustomCmdLineHost.cs" />
@@ -62,10 +61,6 @@
     <ProjectReference Include="..\..\absconfig\AbstractionConfig\AbstractionConfig.csproj">
       <Project>{B217A0DA-332A-4394-BB83-06A995DBD1AC}</Project>
       <Name>AbstractionConfig</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\OperationABS\OperationABS.csproj">
-      <Project>{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}</Project>
-      <Name>OperationABS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -83,7 +78,6 @@
     </None>
     <None Include="absbuilder\Builder_v1_0.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Builder_v1_0.designer.cs</LastGenOutput>
       <TransformOnBuild>True</TransformOnBuild>
     </None>
   </ItemGroup>

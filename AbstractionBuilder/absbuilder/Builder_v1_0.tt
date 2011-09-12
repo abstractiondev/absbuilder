@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostSpecific="true" #>
-<#@ output extension=".designer.cs" #>
+<#@ output extension="?" #>
 <#@ Assembly Name="System.Core.dll" #>
 <#@ Assembly Name="System.Xml.dll" #>
 <#@ Assembly Name="System.Xml.Linq.dll" #>
@@ -18,7 +18,9 @@
 <#   
 	string templateDirectoryName = Path.GetDirectoryName(Host.TemplateFile);
 	string directoryName = templateDirectoryName + @"\In\Content_v1_0";
+	string outputContentName = templateDirectoryName + @"\Out\Builder.designer.cs";
 	directoryName = directoryName.Replace(@"absbuilder\AbstractionBuilder", "AbstractionContent");
+	outputContentName = outputContentName.Replace(@"absbuilder\AbstractionBuilder", "AbstractionContent");
 	string[] xmlFileNames = Directory.GetFiles(directoryName, "*.xml");
 
 	#>
@@ -30,24 +32,16 @@ using System;
 	{
 		AbstractionBuilderType absbuilder = LoadXml<AbstractionBuilderType>(xmlFileName);
 		GenerateBuilder(absbuilder.Builder);
-		/*
-		Operation_v1_0.OperationAbstractionType abstraction = LoadXml<Operation_v1_0.OperationAbstractionType>(xmlFileName);
-		Operation_v1_0.OperationsType operations = abstraction.Operations;
-		BeginNamespace(operations.codeNamespace);
-		foreach(var operation in operations.Operation)
-			GenerateOperation(operation);
-		EndBlock();
-		*/
-		//PowerPointAddIn_v1_0.PowerPointAddInAbstraction abstraction = LoadXml<PowerPointAddIn_v1_0.PowerPointAddInAbstraction>(xmlFileName);
-		//GenerateAddInBase(abstraction);
 	}
+	
+	File.WriteAllText(outputContentName, this.GenerationEnvironment.ToString());
+ 
 #>
 <#+ 
 	#region Class Level Variable Block
 	
 	private BuilderType CurrBuilder;
 	
-	//CQRS_v1_0.DomainType CurrentDomain;
 	void GenerateBuilder(BuilderType builder)
 	{
 		CurrBuilder = builder;
@@ -64,7 +58,6 @@ namespace AbstractionBuilder {
 				GenerateExecuteItem(buildExecuteItem);
 			}
 		#>
-            //generatorFiles = ExecuteAssemblyGenerator("Documentation", "ABS", "DesignDocumentation_v1_0");
         }
 		
 		private void CleanUp()
