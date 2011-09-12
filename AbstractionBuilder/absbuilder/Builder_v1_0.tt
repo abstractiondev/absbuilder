@@ -17,7 +17,7 @@
 <#@ include file="absbuilder_v1_0.ttinclude" #>
 <#   
 	string templateDirectoryName = Path.GetDirectoryName(Host.TemplateFile);
-	string directoryName = templateDirectoryName + @"\Content_v1_0";
+	string directoryName = templateDirectoryName + @"\In\Content_v1_0";
 	directoryName = directoryName.Replace(@"absbuilder\AbstractionBuilder", "AbstractionContent");
 	string[] xmlFileNames = Directory.GetFiles(directoryName, "*.xml");
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using AbstractionConfig;
 
@@ -28,13 +29,21 @@ namespace AbstractionBuilder
 
         private void WriteGeneratorFiles(Tuple<string, string>[] generatorFiles, string abstractionName, string abstractionTypeString)
         {
+            string abstractionPathName = abstractionName + abstractionTypeString;
+            string outputPath = Path.Combine(ContentSupport.GetAbstractionOutputFolder(abstractionPathName));
+            foreach(var generatorFile in generatorFiles)
+            {
+                string fileName = Path.Combine(outputPath, generatorFile.Item1);
+                File.WriteAllText(fileName, generatorFile.Item2);
+            }
         }
 
         private Tuple<string, string>[] ExecuteAssemblyGenerator(string abstractionName, string abstractionTypeString, string generatorClassName)
         {
             string assemblyLocation = String.Format(LocationFormat, abstractionName, abstractionTypeString);
+            string[] xmlSourceFiles = ContentSupport.GetInputContentFiles(abstractionName, "*.xml");
             object result = DynaInvoke.InvokeMethod(assemblyLocation, generatorClassName, "GetGeneratorContent",
-                                    new string[0]);
+                                    xmlSourceFiles);
             Tuple<string, string>[] resultTupleArray = (Tuple<string, string>[]) result;
             return resultTupleArray;
         }

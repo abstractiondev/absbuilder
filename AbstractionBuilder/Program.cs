@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DocumentationABS.Documentation;
+//using DocumentationABS.Documentation;
 using Microsoft.VisualStudio.TextTemplating;
 using OperationABS.Operation;
 
@@ -31,6 +31,7 @@ namespace AbstractionBuilder
         {
         }
 
+        /*
         private static void GenerateDocumentation()
         {
             CustomCmdLineHost host = new CustomCmdLineHost();
@@ -44,6 +45,7 @@ namespace AbstractionBuilder
                 File.WriteAllText(fileName, item.Content);
             }
         }
+         * */
     }
 
 }

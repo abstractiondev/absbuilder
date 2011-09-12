@@ -63,17 +63,9 @@
       <Project>{B217A0DA-332A-4394-BB83-06A995DBD1AC}</Project>
       <Name>AbstractionConfig</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DocumentationABS\DocumentationABS.csproj">
-      <Project>{40F40689-7A82-4FE7-9E57-CD0C060D03E1}</Project>
-      <Name>DocumentationABS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\OperationABS\OperationABS.csproj">
       <Project>{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}</Project>
       <Name>OperationABS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\OperationToDocumentationTRANS\OperationToDocumentationTRANS.csproj">
-      <Project>{17F6909F-3DF1-4FDC-8A1B-83DC4534A7DC}</Project>
-      <Name>OperationToDocumentationTRANS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
