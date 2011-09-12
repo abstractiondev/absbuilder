@@ -107,8 +107,10 @@ namespace AbstractionBuilder {
 			throw new ArgumentException("TransformationBuildItem referring to undefined transformation: " + transItem.nameRef);
 		}
 		#>
+		FetchTransformationSources("<#= trans.name #>", "<#= trans.sourceAbstraction #>");
         generatorFiles = ExecuteAssemblyGenerator("<#= trans.name #>", "TRANS", "Transformer");
         WriteGeneratorFiles(generatorFiles, "<#= trans.name #>", "TRANS");
+		PushTransformationTargets("<#= trans.name #>", "<#= trans.targetAbstraction #>");
 		<#+
 	}
 	

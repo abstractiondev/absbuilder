@@ -38,5 +38,16 @@ namespace AbstractionBuilder
             Tuple<string, string>[] resultTupleArray = (Tuple<string, string>[]) result;
             return resultTupleArray;
         }
+
+        private void FetchTransformationSources(string transformationName, string sourceAbstractionName)
+        {
+            ContentSupport.CleanupTransformationDirectories(transformationName);
+            ContentSupport.CopyFromSourceToTrans(sourceAbstractionName, transformationName);
+        }
+
+        private void PushTransformationTargets(string transformationName, string targetAbstractionName)
+        {
+            ContentSupport.CopyFromTransToTarget(transformationName, targetAbstractionName);
+        }
     }
 }
