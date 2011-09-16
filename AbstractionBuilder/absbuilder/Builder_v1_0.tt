@@ -39,6 +39,11 @@ using System;
 #>
 <#+ 
 	#region Class Level Variable Block
+
+	void SetCurrentAbstraction(object abs)
+	{
+		throw new NotSupportedException("Builder does not run xml config");
+	}
 	
 	private BuilderType CurrBuilder;
 	
