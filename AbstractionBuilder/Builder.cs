@@ -11,21 +11,16 @@ namespace AbstractionBuilder
 
         public Builder()
         {
-            ContentSupport.ContentRootPath =
-                @"C:\GitHub\kallex\private\Demos\CQRS_CustomerBankAccountDemo\Abstractions\AbstractionContent\";
-
             string currentAssemblyLocation = Assembly.GetExecutingAssembly().Location;
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.GetDirectoryName(currentAssemblyLocation));
+            dirInfo = dirInfo.Parent.Parent.Parent.Parent;
+            ContentSupport.ContentRootPath = Path.Combine(dirInfo.FullName, "AbstractionContent");
+
+
             LocationFormat = currentAssemblyLocation.Replace(@"\absbuilder\AbstractionBuilder\",
                                                              @"\{0}{1}\").Replace("AbstractionBuilder.exe",
                                                                                "{0}{1}.dll");
         }
-
-        //public void Build()
-        //{
-        //    Tuple<string, string>[] generatorFiles;
-        //    generatorFiles = ExecuteAssemblyGenerator("Documentation", "ABS", "DesignDocumentation_v1_0");
-        //    WriteGeneratorFiles(generatorFiles);
-        //}
 
         private void WriteGeneratorFiles(Tuple<string, string>[] generatorFiles, string abstractionName, string abstractionTypeString)
         {
