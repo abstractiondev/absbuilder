@@ -58,12 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\absconfig\AbstractionConfig\AbstractionConfig.csproj">
-      <Project>{B217A0DA-332A-4394-BB83-06A995DBD1AC}</Project>
-      <Name>AbstractionConfig</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="absbuilder\absbuilder_v1_0.ttinclude" />
     <None Include="absbuilder\Content_v1_0\absbuilder_v1_0.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -83,6 +77,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\absconfig\AbstractionConfig\AbstractionConfig.csproj">
+      <Project>{B217A0DA-332A-4394-BB83-06A995DBD1AC}</Project>
+      <Name>AbstractionConfig</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
