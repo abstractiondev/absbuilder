@@ -106,14 +106,14 @@ namespace AbstractionBuilder
                         {
                             DynaClassInfo ci = new DynaClassInfo(type,
                                                                  Activator.CreateInstance(type));
-                            ClassReferences.Add(AssemblyName, ci);
+                            ClassReferences.Add(AssemblyName + "." + ClassName, ci);
                             return (ci);
                         }
                     }
                 }
                 throw (new System.Exception("could not instantiate class"));
             }
-            return ((DynaClassInfo)ClassReferences[AssemblyName]);
+            return ((DynaClassInfo)ClassReferences[AssemblyName + "." + ClassName]);
         }
 
         public static Object InvokeMethod(DynaClassInfo ci,
