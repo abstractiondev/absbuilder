@@ -29,6 +29,9 @@ namespace AbstractionBuilder
             foreach(var generatorFile in generatorFiles)
             {
                 string fileName = Path.Combine(outputPath, generatorFile.Item1);
+                string directoryName = Path.GetDirectoryName(fileName);
+                if (!Directory.Exists(directoryName))
+                    Directory.CreateDirectory(directoryName);
                 File.WriteAllText(fileName, generatorFile.Item2);
             }
         }
