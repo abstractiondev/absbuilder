@@ -56,6 +56,7 @@
     <Compile Include="DynaInvoke.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemaIncludeSupport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="absbuilder\absbuilder_v1_0.ttinclude" />
