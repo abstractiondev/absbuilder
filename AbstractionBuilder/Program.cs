@@ -35,10 +35,26 @@ namespace AbstractionBuilder
         private static int ExecuteProgram(string[] args)
         {
             Debugger.Launch();
+            if (args.Length == 2 && args[0] == "-XSDInclude")
+                return ExecuteXSDIncludeGenerator(args[1]);
             Console.WriteLine("Absbuilder Succeeded 0");
             Console.Error.WriteLine("Errori virhe!!!");
             return -1;
             //return 0;
+        }
+
+        private static int ExecuteXSDIncludeGenerator(string xsdFileName)
+        {
+            FileInfo fileInfo = new FileInfo(xsdFileName);
+            xsdFileName = fileInfo.FullName;
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.GetDirectoryName(xsdFileName));
+            // Generate the include files to parent directory, not in the content directory
+            dirInfo = dirInfo.Parent;
+            // Generating the T4 generator usable no-namespace include with T4 tags
+            SchemaIncludeSupport.GenerateTTInclude(xsdFileName, dirInfo.FullName);
+            // Generating the Transformation usable namespace include without T4 tags 
+            SchemaIncludeSupport.GenerateTTInclude(xsdFileName, dirInfo.FullName, generateNamespace: true, generateT4Tags: false);
+            return 0;
         }
 
         private static void TransformDocumentation()

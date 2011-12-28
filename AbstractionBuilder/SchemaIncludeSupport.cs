@@ -7,9 +7,13 @@ namespace AbstractionBuilder
     {
         public static void GenerateXSDSerializer(string xsdFileName, string outputDirectory, bool generateNamespace, bool generateT4Tags)
         {
+            if (xsdFileName.EndsWith(".xsd") == false)
+                throw new ArgumentException("XSD file name must end with .xsd: " + xsdFileName, "xsdFileName");
+            if(File.Exists(xsdFileName) == false)
+                throw new ArgumentException("XSD file name must exist: " + xsdFileName, "xsdFileName");
             string xsdExeFileName = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) +
                                     @"\Microsoft SDKs\Windows\v7.0A\bin\xsd.exe";
-            string baseFileName = Path.GetFileNameWithoutExtension(xsdExeFileName);
+            string baseFileName = Path.GetFileNameWithoutExtension(xsdFileName);
             string outputClassFile = outputDirectory + "\\" + baseFileName + ".cs";
             string namespaceFileTag = generateNamespace ? "_namespace" : "";
             string outputttinclude = outputDirectory + "\\" + baseFileName + namespaceFileTag + ".ttinclude";
@@ -57,14 +61,14 @@ namespace AbstractionBuilder
             return xsdFile;
         }
 
-        public static void GenerateTTInclude(string templateFile, string outputDirectory, bool generateNamespace = false, bool generateT4Tags = true)
+        public static void GenerateTTInclude(string xsdFileName, string outputDirectory, bool generateNamespace = false, bool generateT4Tags = true)
         {
-            GenerateXSDSerializer(GetXSDFile(templateFile), outputDirectory, generateNamespace, generateT4Tags);
+            GenerateXSDSerializer(xsdFileName, outputDirectory, generateNamespace, generateT4Tags);
         }
 
-        public static void GenerateTTInclude(string templateFile, bool generateNamespace = false)
+        public static void GenerateTTInclude(string xsdFileName, bool generateNamespace = false)
         {
-            GenerateTTInclude(templateFile, Path.GetDirectoryName(templateFile), generateNamespace);
+            GenerateTTInclude(xsdFileName, Path.GetDirectoryName(xsdFileName), generateNamespace);
         }
 
         static void WriteLog(string entry)
