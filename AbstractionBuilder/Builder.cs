@@ -36,6 +36,11 @@ namespace AbstractionBuilder
             }
         }
 
+        private void ExecuteCustomExecution(string abstractionName, string abstractionTypeString, string executinClassName, string executionMethodName)
+        {
+            throw new NotImplementedException("TODO: Look reflection/DynaInvoke from the method below");            
+        }
+
         private Tuple<string, string>[] ExecuteAssemblyGenerator(string abstractionName, string abstractionTypeString, string generatorClassName)
         {
             string assemblyLocation = String.Format(LocationFormat, abstractionName, abstractionTypeString);

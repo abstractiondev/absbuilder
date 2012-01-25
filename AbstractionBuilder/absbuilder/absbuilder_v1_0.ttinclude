@@ -76,6 +76,7 @@ public partial class BuilderType {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("AbstractionItem", typeof(AbstractionItemType), IsNullable=false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("ExecutionItem", typeof(ExecutionItemType), IsNullable=false)]
     [System.Xml.Serialization.XmlArrayItemAttribute("TransformationItem", typeof(TransformationItemType), IsNullable=false)]
     public object[] BuildExecution {
         get {
@@ -140,6 +141,54 @@ public partial class GeneratorType {
         }
         set {
             this.nameField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/absbuilder_v1_0.xsd")]
+public partial class ExecutionItemType {
+    
+    private string nameRefField;
+    
+    private string classNameField;
+    
+    private string methodNameField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string nameRef {
+        get {
+            return this.nameRefField;
+        }
+        set {
+            this.nameRefField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string className {
+        get {
+            return this.classNameField;
+        }
+        set {
+            this.classNameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string methodName {
+        get {
+            return this.methodNameField;
+        }
+        set {
+            this.methodNameField = value;
         }
     }
 }

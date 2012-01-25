@@ -91,12 +91,34 @@ Name matches the subdirectory in "Abstractions" root folder.</xs:documentation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="AbstractionItem" type="AbstractionItemType"/>
 			<xs:element name="TransformationItem" type="TransformationItemType"/>
+			<xs:element name="ExecutionItem" type="ExecutionItemType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="AbstractionItemType">
-		<xs:attribute name="nameRef" use="required"/>
+		<xs:attribute name="nameRef" type="xs:string" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="TransformationItemType">
-		<xs:attribute name="nameRef" use="required"/>
+		<xs:attribute name="nameRef" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ExecutionItemType">
+		<xs:attribute name="nameRef" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Name referring to Abstraction
+
+Note! Currently all execution items are required to be within abstraction assemblies.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="className" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Abstraction execute class name.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="methodName" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Executor method name.
+
+Note! Requires to be "public static" method.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 </xs:schema>
