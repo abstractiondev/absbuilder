@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 //using DocumentationABS.Documentation;
 using Microsoft.VisualStudio.TextTemplating;
@@ -15,6 +16,29 @@ namespace AbstractionBuilder
     {
         static int Main(string[] args)
         {
+            // 
+            string runningPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string directiveXml;
+
+            if(args != null && args.Length > 0)
+            {
+                directiveXml = args[0];
+            }
+            else
+            {
+                var dirInfo = new DirectoryInfo(runningPath);
+                dirInfo = dirInfo.Parent.Parent.Parent.Parent;
+                //@TODO: This should be changed into a loop that many contents can be run
+                directiveXml = Path.Combine(dirInfo.FullName, @"AbstractionContent\absbuilder\In\AbstractionBuilderContent_v1_0.xml");
+            }
+            Console.WriteLine("Using {0} as command file.", directiveXml);
+
+            AbstractionEnvironment env = new AbstractionEnvironment(runningPath, directiveXml);
+
+            Runner runner = new Runner(env);
+            runner.Execution();
+
+            return 0;
             //CustomCmdLineHost host = new CustomCmdLineHost();
             //host.TemplateFileValue = @"C:\GitHub\kallex\private\Demos\CQRS_CustomerBankAccountDemo\Abstractions\OperationABS\Operation\CSharpCode_v1_0.tt";
             //OperationABS.Operation.CSharpCode_v1_0 generator = new CSharpCode_v1_0();
@@ -22,6 +46,7 @@ namespace AbstractionBuilder
             //string result = generator.TransformText();
             //TransformDocumentation();
             //GenerateDocumentation();
+            /*
             if(args != null && args.Length > 0)
             {
                 return ExecuteProgram(args);
@@ -30,6 +55,7 @@ namespace AbstractionBuilder
             builder.Build();
             Console.WriteLine("Generations Done!");
             return 0;
+             */
         }
 
         private static int ExecuteProgram(string[] args)

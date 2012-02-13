@@ -129,12 +129,20 @@ namespace AbstractionBuilder
         }
 
         // --- this is the method that you invoke ------------
-
         public static Object InvokeMethod(string AssemblyName,
                                           string ClassName, string MethodName, Object[] args)
         {
             DynaClassInfo ci = GetClassReference(AssemblyName, ClassName);
             return (InvokeMethod(ci, MethodName, args));
+        }
+
+        // --- this is the method that you invoke ------------
+        // Passes also AbstractionEnvironment as a first argument to caller
+        public static Object InvokeMethod(string AssemblyName,
+                                          string ClassName, string MethodName, AbstractionEnvironment env, Object[] args)
+        {
+            Object[] allArgs = new Object[] {env, args};
+            return InvokeMethod(AssemblyName, ClassName, MethodName, allArgs);
         }
     }
 }
