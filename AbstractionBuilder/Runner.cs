@@ -60,8 +60,17 @@ namespace AbstractionBuilder
                     // #2 Do transformation
                     string assemblyLocation = _env.CurrentItemAssembly();
                     string[] transFiles = _env.GetCurrentInputContentFiles();
-                    object result = DynaInvoke.InvokeMethod(assemblyLocation, trans.name, "GetGeneratorContent",
-                                    _env, transFiles);
+                    object result;
+                    try
+                    {
+                        result = DynaInvoke.InvokeMethod(assemblyLocation, trans.name, "GetGeneratorContent",
+                                                         _env, transFiles);
+                    } catch(Exception ex)
+                    {
+                        // #2 Legacy-structure support
+                        result = DynaInvoke.InvokeMethod(assemblyLocation, "Transformer", "GetGeneratorContent",
+                                                         transFiles);
+                    }
                     Tuple<string, string>[] resultTupleArray = (Tuple<string, string>[]) result;
                     WriteGeneratorFiles(resultTupleArray);
 
@@ -110,9 +119,17 @@ namespace AbstractionBuilder
             string[] xmlSourceFiles = _env.GetCurrentInputContentFiles();
 
             string assemblyLocation = _env.CurrentItemAssembly();
-            //@TODO: Should _env be passed to DynaInvoke, like in customexecution? How called func chances?
-            object result = DynaInvoke.InvokeMethod(assemblyLocation, generatorClassName, "GetGeneratorContent",
-                                    _env, xmlSourceFiles);
+            object result;
+            try
+            {
+                result = DynaInvoke.InvokeMethod(assemblyLocation, generatorClassName, "GetGeneratorContent",
+                                                 _env, xmlSourceFiles);
+            } catch(Exception)
+            {
+                // Legacy structure support without _env being passed
+                result = DynaInvoke.InvokeMethod(assemblyLocation, generatorClassName, "GetGeneratorContent",
+                                                 xmlSourceFiles);
+            }
             Tuple<string, string>[] resultTupleArray = (Tuple<string, string>[])result;
             return resultTupleArray;
         }

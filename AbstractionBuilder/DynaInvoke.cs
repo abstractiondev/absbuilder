@@ -81,7 +81,8 @@ namespace AbstractionBuilder
         public static DynaClassInfo
             GetClassReference(string AssemblyName, string ClassName)
         {
-            if (ClassReferences.ContainsKey(AssemblyName) == false)
+            string assemblyClassName = AssemblyName + "." + ClassName;
+            if (ClassReferences.ContainsKey(assemblyClassName) == false)
             {
                 Assembly assembly;
                 if (AssemblyReferences.ContainsKey(AssemblyName) == false)
@@ -106,7 +107,7 @@ namespace AbstractionBuilder
                         {
                             DynaClassInfo ci = new DynaClassInfo(type,
                                                                  Activator.CreateInstance(type));
-                            ClassReferences.Add(AssemblyName + "." + ClassName, ci);
+                            ClassReferences.Add(assemblyClassName, ci);
                             return (ci);
                         }
                     }

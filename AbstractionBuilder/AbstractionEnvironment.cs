@@ -83,8 +83,19 @@ namespace AbstractionBuilder
         }
         public string InDirectory(string abstractionName)
         {
+            // Removing the legacy ABS extension on the content
+            abstractionName = CleanupNameExtension(abstractionName);
             string path = Path.Combine(ContentRootPath, abstractionName, AbstractionInputFolder);
             return path;
+        }
+
+        private string CleanupNameExtension(string abstractionName)
+        {
+            if (abstractionName.EndsWith("ABS"))
+                abstractionName = abstractionName.Substring(0, abstractionName.Length - 3);
+            else if (abstractionName.EndsWith("TRANS"))
+                abstractionName = abstractionName.Substring(0, abstractionName.Length - 5);
+            return abstractionName;
         }
 
         // Since directive XML can contain many abstractions, it is needed
@@ -95,6 +106,8 @@ namespace AbstractionBuilder
         }
         public string OutDirectory(string abstractionName)
         {
+            // Removing the legacy ABS extension on the content
+            abstractionName = CleanupNameExtension(abstractionName);
             string path = Path.Combine(ContentRootPath, abstractionName, AbstractionOutputFolder);
             return path;
         }
