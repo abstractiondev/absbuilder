@@ -38,7 +38,14 @@ namespace AbstractionBuilder
 
         private void ExecuteCustomExecution(string abstractionName, string abstractionTypeString, string executinClassName, string executionMethodName)
         {
-            throw new NotImplementedException("TODO: Look reflection/DynaInvoke from the method below");            
+            string assemblyLocation = String.Format(LocationFormat, abstractionName, abstractionTypeString);
+            string[] xmlSourceFiles = ContentSupport.GetInputContentFiles(abstractionName, "*.xml");
+
+            object result = DynaInvoke.InvokeMethod(assemblyLocation, executinClassName, executionMethodName,
+                                    xmlSourceFiles);
+//            Tuple<string, string>[] resultTupleArray = (Tuple<string, string>[])result;
+//            return resultTupleArray;
+            return;
         }
 
         private Tuple<string, string>[] ExecuteAssemblyGenerator(string abstractionName, string abstractionTypeString, string generatorClassName)

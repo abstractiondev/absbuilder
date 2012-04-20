@@ -85,6 +85,7 @@ namespace AbstractionBuilder {
 			throw new ArgumentNullException("executeItem");
 		AbstractionItemType absItem = executeItem as AbstractionItemType;
 		TransformationItemType transItem = executeItem as TransformationItemType;
+		ExecutionItemType executionItem = executeItem as ExecutionItemType;
 		if(absItem != null)
 		{
 		#>
@@ -99,6 +100,10 @@ namespace AbstractionBuilder {
 		#>
             CleanUpTransformationInputAndOutput("<#= targetTrans.name #>", "<#= targetTrans.targetAbstraction #>");
 		<#+
+		}
+		else if (executionItem != null)
+		{
+			// Do nothing in custom execution
 		}
 		else
 			throw new NotSupportedException("Execute item type: " + executeItem.GetType().Name);

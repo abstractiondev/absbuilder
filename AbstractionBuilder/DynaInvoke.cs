@@ -120,7 +120,6 @@ namespace AbstractionBuilder
                                           string MethodName, Object[] args)
         {
             // Dynamically Invoke the method
-
             Object Result = ci.type.InvokeMember(MethodName,
                                                  BindingFlags.Default | BindingFlags.InvokeMethod,
                                                  null,
