@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+//using LibZ.Bootstrap;
 //using DocumentationABS.Documentation;
 using Microsoft.VisualStudio.TextTemplating;
 //using OperationABS.Operation;
@@ -16,57 +17,35 @@ namespace AbstractionBuilder
     {
         static int Main(string[] args)
         {
-            // 
-            string runningPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string directiveXml;
-
-            if(args != null && args.Length > 0)
+            //LibZResolver.Startup(() =>
             {
-                directiveXml = args[0];
+
+                // 
+                string runningPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string directiveXml;
+                string contentRootPath = null;
+
+                if (args != null && args.Length > 0)
+                {
+                    directiveXml = args[0];
+                    contentRootPath = args[1];
+                }
+                else
+                {
+                    var dirInfo = new DirectoryInfo(runningPath);
+                    dirInfo = dirInfo.Parent.Parent.Parent.Parent;
+                    //@TODO: This should be changed into a loop that many contents can be run
+                    directiveXml = Path.Combine(dirInfo.FullName, @"AbstractionContent\absbuilder\In\Content_v1_0\AbstractionBuilderContent_v1_0.xml");
+                }
+                Console.WriteLine("Using {0} as command file.", directiveXml);
+
+                AbstractionEnvironment env = new AbstractionEnvironment(runningPath, directiveXml, contentRootPath);
+
+                Runner runner = new Runner(env);
+                runner.Execution();
             }
-            else
-            {
-                var dirInfo = new DirectoryInfo(runningPath);
-                dirInfo = dirInfo.Parent.Parent.Parent.Parent;
-                //@TODO: This should be changed into a loop that many contents can be run
-                directiveXml = Path.Combine(dirInfo.FullName, @"AbstractionContent\absbuilder\In\Content_v1_0\AbstractionBuilderContent_v1_0.xml");
-            }
-            Console.WriteLine("Using {0} as command file.", directiveXml);
-
-            AbstractionEnvironment env = new AbstractionEnvironment(runningPath, directiveXml);
-
-            Runner runner = new Runner(env);
-            runner.Execution();
-
+            //);
             return 0;
-            //CustomCmdLineHost host = new CustomCmdLineHost();
-            //host.TemplateFileValue = @"C:\GitHub\kallex\private\Demos\CQRS_CustomerBankAccountDemo\Abstractions\OperationABS\Operation\CSharpCode_v1_0.tt";
-            //OperationABS.Operation.CSharpCode_v1_0 generator = new CSharpCode_v1_0();
-            //generator.Host = host;
-            //string result = generator.TransformText();
-            //TransformDocumentation();
-            //GenerateDocumentation();
-            /*
-            if(args != null && args.Length > 0)
-            {
-                return ExecuteProgram(args);
-            }
-            Builder builder = new Builder();
-            builder.Build();
-            Console.WriteLine("Generations Done!");
-            return 0;
-             */
-        }
-
-        private static int ExecuteProgram(string[] args)
-        {
-            Debugger.Launch();
-            if (args.Length == 2 && args[0] == "-XSDInclude")
-                return ExecuteXSDIncludeGenerator(args[1]);
-            Console.WriteLine("Absbuilder Succeeded 0");
-            Console.Error.WriteLine("Errori virhe!!!");
-            return -1;
-            //return 0;
         }
 
         private static int ExecuteXSDIncludeGenerator(string xsdFileName)
@@ -87,20 +66,5 @@ namespace AbstractionBuilder
         {
         }
 
-        /*
-        private static void GenerateDocumentation()
-        {
-            CustomCmdLineHost host = new CustomCmdLineHost();
-            host.TemplateFileValue = @"C:\GitHub\kallex\private\Demos\CQRS_CustomerBankAccountDemo\Abstractions\DocumentationABS\Documentation\DesignDocumentation_v1_0.tt";
-            DocumentationABS.Documentation.DesignDocumentation_v1_0 generator = new DesignDocumentation_v1_0();
-            generator.Host = host;
-            var result = generator.GenerateDocuments();
-            foreach(var item in result)
-            {
-                string fileName = @"c:\tmp\" + item.Name;
-                File.WriteAllText(fileName, item.Content);
-            }
-        }
-         * */
     }
 }

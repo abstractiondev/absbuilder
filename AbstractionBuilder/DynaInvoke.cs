@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Data.Odbc;
+using System.IO;
 using System.Reflection;
 
 namespace AbstractionBuilder
@@ -76,45 +79,72 @@ namespace AbstractionBuilder
 
 
         public static Hashtable AssemblyReferences = new Hashtable();
-        public static Hashtable ClassReferences = new Hashtable();
+        public static Dictionary<string, DynaClassInfo> ClassReferences = new Dictionary<string, DynaClassInfo>();
 
         public static DynaClassInfo
-            GetClassReference(string AssemblyName, string ClassName)
+            GetClassReference(string assemblyFullPath, string className, bool searchWithinCallingAssembly = true)
         {
-            string assemblyClassName = AssemblyName + "." + ClassName;
-            if (ClassReferences.ContainsKey(assemblyClassName) == false)
+            string assemblyClassName = assemblyFullPath + "." + className;
+            DynaClassInfo classInfo = null;
+            var assemblyName = Path.GetFileNameWithoutExtension(assemblyFullPath);
+
+            if (!ClassReferences.TryGetValue(assemblyClassName, out classInfo))
             {
-                Assembly assembly;
-                if (AssemblyReferences.ContainsKey(AssemblyName) == false)
+                Assembly assembly = null;
+                if (searchWithinCallingAssembly)
                 {
-                    AssemblyReferences.Add(AssemblyName,
-                                           assembly = Assembly.LoadFrom(AssemblyName));
-                }
-                else
-                    assembly = (Assembly)AssemblyReferences[AssemblyName];
-
-                // Walk through each type in the assembly
-
-                foreach (Type type in assembly.GetTypes())
-                {
-                    if (type.IsClass == true)
+                    var currAssembly = Assembly.GetExecutingAssembly();
+                    var currAssemblyExistingClass = getClassInfo(currAssembly, className);
+                    if (currAssemblyExistingClass != null)
                     {
-                        // doing it this way means that you don't have
-
-                        // to specify the full namespace and class (just the class)
-
-                        if (type.FullName.EndsWith("." + ClassName))
+                        assembly = currAssembly;
+                        classInfo = currAssemblyExistingClass;
+                    }
+                    else
+                    {
+                        try
                         {
-                            DynaClassInfo ci = new DynaClassInfo(type,
-                                                                 Activator.CreateInstance(type));
-                            ClassReferences.Add(assemblyClassName, ci);
-                            return (ci);
+                            assembly = Assembly.Load(assemblyName);
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            
                         }
                     }
                 }
-                throw (new System.Exception("could not instantiate class"));
+                if(assembly == null)
+                {
+                    if (AssemblyReferences.ContainsKey(assemblyFullPath) == false)
+                    {
+                        AssemblyReferences.Add(assemblyFullPath,
+                            assembly = Assembly.LoadFrom(assemblyFullPath));
+                    }
+                    else
+                        assembly = (Assembly) AssemblyReferences[assemblyFullPath];
+                }
+
+                classInfo = classInfo ?? getClassInfo(assembly, className);
+                if(classInfo == null)
+                    throw new System.Exception("Could not instantiate class: " + className);
+
+                ClassReferences.Add(assemblyClassName, classInfo);
             }
-            return ((DynaClassInfo)ClassReferences[AssemblyName + "." + ClassName]);
+            return classInfo;
+        }
+
+        private static DynaClassInfo getClassInfo(Assembly assembly, string className)
+        {
+            var classNameSuffix = "." + className;
+            // Walk through each type in the assembly
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.IsClass == true && type.FullName.EndsWith(classNameSuffix))
+                {
+                    var classInfo = new DynaClassInfo(type, Activator.CreateInstance(type));
+                    return classInfo;
+                }
+            }
+            return null;
         }
 
         public static Object InvokeMethod(DynaClassInfo ci,

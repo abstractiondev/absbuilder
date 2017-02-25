@@ -33,18 +33,23 @@ namespace AbstractionBuilder
         // Hide normal constructor
         private AbstractionEnvironment() {}
         // Constructor
-        public AbstractionEnvironment(string path, string xmlFile)
+        public AbstractionEnvironment(string path, string xmlFile, string contentRootPath = null)
         {
             AbstractionBuilderDirectory = path;
             BuilderXmlFile = xmlFile;
             AbstractionXml = LoadXml<absbuilder.AbstractionBuilderType>(xmlFile);
 
-            // Initialize ContentSupport-class
-            var dirInfo = new DirectoryInfo(path);
-            dirInfo = dirInfo.Parent.Parent.Parent.Parent;
-            //ContentSupport.ContentRootPath = Path.Combine(dirInfo.FullName, AbstractionContentFolder);
-            ContentRootPath = Path.Combine(dirInfo.FullName, AbstractionContentFolder);
-
+            if (contentRootPath == null)
+            {
+                // Initialize ContentSupport-class
+                var dirInfo = new DirectoryInfo(path);
+                dirInfo = dirInfo?.Parent?.Parent?.Parent?.Parent;
+                if (dirInfo == null)
+                    throw new InvalidDataException("Failed to retrieve Parent");
+                //ContentSupport.ContentRootPath = Path.Combine(dirInfo.FullName, AbstractionContentFolder);
+                contentRootPath = Path.Combine(dirInfo.FullName, AbstractionContentFolder);
+            }
+            ContentRootPath = contentRootPath;
             LocationFormat = path.Replace(@"\absbuilder\AbstractionBuilder\", @"\{0}\") + @"\{0}.dll";
 
         }
