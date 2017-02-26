@@ -63,7 +63,8 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Mono.TextTemplating, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Mono.TextTemplating.1.1.0\lib\net45\Mono.TextTemplating.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -97,6 +98,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
