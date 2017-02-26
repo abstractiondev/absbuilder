@@ -50,8 +50,8 @@ namespace AbstractionBuilder
                 contentRootPath = Path.Combine(dirInfo.FullName, AbstractionContentFolder);
             }
             ContentRootPath = contentRootPath;
-            LocationFormat = path.Replace(@"\absbuilder\AbstractionBuilder\", @"\{0}\") + @"\{0}.dll";
-
+            var locationFormatPlaceholder = Path.Combine("", "absbuilder", "AbstractionBuilder", "");
+            LocationFormat = path.Replace(locationFormatPlaceholder, @"{0}") + Path.DirectorySeparatorChar + @"{0}.dll";
         }
 
 /*        public void SetAbstractionName(string abstractionName)
