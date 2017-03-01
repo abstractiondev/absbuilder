@@ -17,6 +17,20 @@ namespace AbstractionBuilder
     {
         static int Main(string[] args)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, eventArgs) =>
+            {
+                var assemblyName = new AssemblyName(eventArgs.Name).Name;
+                string resourceName = assemblyName + ".dll";
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+                {
+                    if (stream == null)
+                        return null;
+                    var assemblyData = new byte[stream.Length];
+                    stream.Read(assemblyData, 0, assemblyData.Length);
+                    return Assembly.Load(assemblyData);
+                }
+            };
+
             //LibZResolver.Startup(() =>
             {
 
