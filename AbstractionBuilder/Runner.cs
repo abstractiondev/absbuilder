@@ -75,12 +75,14 @@ namespace AbstractionBuilder
                     WriteGeneratorFiles(resultTupleArray);
 
                     // #3 copy data to from TRANS-OUT to ABS-to-in 
-                    string absOutDir = _env.InDirectory(trans.targetAbstraction);
+                    string absInDirectory = _env.InDirectory(trans.targetAbstraction);
+                    if (!Directory.Exists(absInDirectory))
+                        Directory.CreateDirectory(absInDirectory);
                     string[] files2 = _env.GetCurrentOutputContentFiles();
                     foreach (var filename in files2)
                     {
                         FileInfo file = new FileInfo(filename);
-                        file.CopyTo(Path.Combine(absOutDir, file.Name), true);
+                        file.CopyTo(Path.Combine(absInDirectory, file.Name), true);
                     }
                 }
             }
