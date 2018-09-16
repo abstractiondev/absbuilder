@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using absbuilder;
 
 namespace AbstractionBuilder
@@ -166,8 +167,26 @@ namespace AbstractionBuilder
         private void CleanUpDirectory(string directoryName)
         {
             var directoryInfo = new DirectoryInfo(directoryName);
-            if (directoryInfo.Exists)
-                directoryInfo.Delete(true);
+            int retryTime = 5;
+            Exception lastException = null;
+            while (retryTime-- > 0)
+            {
+                try
+                {
+                    if (directoryInfo.Exists)
+                        directoryInfo.Delete(true);
+                    lastException = null;
+                    break;
+                }
+                catch(Exception exception)
+                {
+                    lastException = exception;
+                    Thread.Sleep(100);
+                }
+            }
+
+            if (lastException != null)
+                throw lastException;
             directoryInfo.Create();
         }
     }
