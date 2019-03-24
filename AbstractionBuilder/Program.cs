@@ -47,7 +47,7 @@ namespace AbstractionBuilder
                 else
                 {
                     var dirInfo = new DirectoryInfo(runningPath);
-                    dirInfo = dirInfo.Parent.Parent.Parent.Parent;
+                    dirInfo = dirInfo.Parent.Parent.Parent.Parent.Parent;
                     //@TODO: This should be changed into a loop that many contents can be run
                     directiveXml = Path.Combine(dirInfo.FullName, 
                         "AbstractionContent", "absbuilder", "In", "Content_v1_0", "AbstractionBuilderContent_v1_0.xml");

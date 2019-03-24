@@ -116,8 +116,12 @@ namespace AbstractionBuilder
                 {
                     if (AssemblyReferences.ContainsKey(assemblyFullPath) == false)
                     {
-                        AssemblyReferences.Add(assemblyFullPath,
-                            assembly = Assembly.LoadFrom(assemblyFullPath));
+                        var candidateFile = assemblyFullPath.Replace(@"\bin\Debug\netcoreapp2.0\", @"\bin\Debug\netstandard2.0\");
+                        if(!File.Exists(assemblyFullPath) && File.Exists(candidateFile))
+                            assembly = Assembly.LoadFrom(candidateFile);
+                        else
+                            assembly = Assembly.LoadFrom(assemblyFullPath);
+                        AssemblyReferences.Add(assemblyFullPath, assembly);
                     }
                     else
                         assembly = (Assembly) AssemblyReferences[assemblyFullPath];

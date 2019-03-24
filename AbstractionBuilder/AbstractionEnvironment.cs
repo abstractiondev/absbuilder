@@ -43,7 +43,7 @@ namespace AbstractionBuilder
             {
                 // Initialize ContentSupport-class
                 var dirInfo = new DirectoryInfo(path);
-                dirInfo = dirInfo?.Parent?.Parent?.Parent?.Parent;
+                dirInfo = dirInfo?.Parent?.Parent?.Parent?.Parent?.Parent;
                 if (dirInfo == null)
                     throw new InvalidDataException("Failed to retrieve Parent");
                 //ContentSupport.ContentRootPath = Path.Combine(dirInfo.FullName, AbstractionContentFolder);
